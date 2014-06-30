@@ -21,16 +21,23 @@ public class RootViewModel extends Model {
     }
 
     public void startSurge() {
-        if (getModel("currentSurge") != null) {
-            throw new RuntimeException("Tried to start a surge when one is already in progress");
+        synchronized (lock) {
+            if (getModel("currentSurge") != null) {
+                throw new RuntimeException("Tried to start a surge when one is already in progress.");
+            }
+            Surge surge = new Surge();
+            set("currentSurge", surge);
+            getSurges().add(surge);
         }
-        Surge surge = new Surge();
-        set("currentSurge", surge);
-        getSurges().insert(surge, 0);
     }
 
     public void stopSurge() {
-        getCurrentSurge().stop();
-        unset("currentSurge");
+        synchronized (lock) {
+            if (getModel("currentSurge") == null) {
+                throw new RuntimeException("Tried to stop a surge when one isn't happening.");
+            }
+            getCurrentSurge().stop();
+            unset("currentSurge");
+        }
     }
 }

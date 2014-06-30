@@ -6,7 +6,7 @@ import android.widget.ArrayAdapter;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.WeakHashMap;
+import java.util.Comparator;
 import java.util.logging.Logger;
 
 import org.json.JSONArray;
@@ -22,6 +22,15 @@ public class Collection<T extends Model> {
     private ArrayList<CollectionListener<? extends Collection<T>, T>> listeners =
             new ArrayList<CollectionListener<? extends Collection<T>, T>>();
 
+    private Comparator<T> comparator = null;
+
+    private ModelListener<T> modelListener = new ModelListener<T>() {
+        @Override
+        public void onChanged(T model, String key, Object oldValue, Object newValue) {
+            notifyChanged(model, key, oldValue, newValue);
+        }
+    };
+
     public Collection() {
     }
 
@@ -35,6 +44,12 @@ public class Collection<T extends Model> {
         }
     }
 
+    public void setComparator(Comparator<T> newComparator) {
+        synchronized (lock) {
+            comparator = newComparator;
+        }
+    }
+
     public int size() {
         synchronized (lock) {
             return items.size();
@@ -44,20 +59,34 @@ public class Collection<T extends Model> {
     public void add(T item) {
         synchronized (lock) {
             int position = items.size();
-            insert(item, position);
+            if (comparator != null) {
+                for (position = 0; position < items.size(); ++position) {
+                    if (comparator.compare(items.get(position), item) > 0) {
+                        break;
+                    }
+                }
+            }
+            items.add(position, item);
+            notifyAdded(item, position);
+            item.addListener(modelListener);
         }
     }
 
     public void insert(T item, int position) {
         synchronized (lock) {
+            if (comparator != null) {
+                throw new RuntimeException("Attempted to insert into a sorted list. Use add()");
+            }
             items.add(position, item);
             notifyAdded(item, position);
+            item.addListener(modelListener);
         }
     }
 
     public void remove(T item) {
         synchronized (lock) {
             items.remove(item);
+            item.removeListener(modelListener);
             notifyRemoved(item);
         }
     }
@@ -104,6 +133,26 @@ public class Collection<T extends Model> {
             ArrayList<CollectionListener> listenersCopy = new ArrayList<CollectionListener>(listeners);
             for (CollectionListener listener : listenersCopy) {
                 listener.onRemove(this, item);
+            }
+        }
+    }
+
+    protected void notifyChanged(final T model, final String key, final Object oldValue, final Object newValue) {
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                notifyChanged(model, key, oldValue, newValue);
+                }
+            });
+            return;
+        }
+
+        synchronized (lock) {
+            log.info("Firing collection change event for " + model);
+            ArrayList<CollectionListener> listenersCopy = new ArrayList<CollectionListener>(listeners);
+            for (CollectionListener listener : listenersCopy) {
+                listener.onChanged(model, key, oldValue, newValue);
             }
         }
     }
@@ -163,6 +212,16 @@ public class Collection<T extends Model> {
                         return;
                     }
                     adapter.remove(item);
+                }
+
+                @Override
+                public void onChanged(T model, String key, Object oldValue, Object newValue) {
+                    ArrayAdapter<T> adapter = weakAdapter.get();
+                    if (adapter == null) {
+                        removeListener(weakListener.get());
+                        return;
+                    }
+                    adapter.notifyDataSetChanged();
                 }
             });
             addListener(weakListener.get());

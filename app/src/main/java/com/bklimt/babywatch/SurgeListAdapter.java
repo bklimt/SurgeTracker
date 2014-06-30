@@ -18,25 +18,16 @@ public class SurgeListAdapter extends ArrayAdapter<Surge> {
     }
 
     /**
-     * We really need a listener that can have a "weak this".
+     * Every 500ms, this listener gets called, and if there's a surge in progress, the list will
+     * be updated so that we can see the second timer tick up. This is a static class so that we
+     * can have a weak reference to "this". Otherwise, the timer thread would keep the adapter
+     * around forever.
      */
-    private static class SurgeListAdapterListener implements ModelListener<Surge>, Runnable {
+    private static class SurgeListAdapterListener implements Runnable {
         WeakReference<SurgeListAdapter> weakAdapter;
 
         SurgeListAdapterListener(SurgeListAdapter adapter) {
             weakAdapter = new WeakReference<SurgeListAdapter>(adapter);
-        }
-
-        @Override
-        public void onChanged(Surge surge, String key, Object oldValue, Object newValue) {
-            SurgeListAdapter adapter = weakAdapter.get();
-            if (adapter == null) {
-                surge.removeListener(this);
-                return;
-            }
-
-            // Since views can be reused, this is the only safe thing to do.
-            adapter.notifyDataSetChanged();
         }
 
         @Override
@@ -67,12 +58,15 @@ public class SurgeListAdapter extends ArrayAdapter<Surge> {
         final TextView startTimeView = (TextView) view.findViewById(R.id.start_time);
 
         durationView.setText(surge.getDuration());
-        frequencyView.setText(surge.getDuration());
+        frequencyView.setText(surge.getFrequency());
         startDateView.setText(surge.getStartDay(this.getContext()));
         startTimeView.setText(surge.getStartTime(this.getContext()));
 
-        // TODO(klimt): This listener won't ever get removed as long as this adapter is still alive.
-        surge.addListener(new SurgeListAdapterListener(this));
+        /*
+         * No need to bind these UI elements, because the Collection is already bound to the list
+         * adapter, and that will fire change events whenever a surge changes. We wouldn't want to
+         * bind these UI elements anyway, because the view can get reused.
+         */
 
         return view;
     }

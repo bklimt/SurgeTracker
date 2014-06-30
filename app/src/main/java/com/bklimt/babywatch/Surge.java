@@ -34,6 +34,19 @@ public class Surge extends Model {
         return getDate("end");
     }
 
+    public int getSecondsSincePrevious() {
+        return getInt("secondsSincePrevious");
+    }
+
+    public void setPrevious(Surge previous) {
+        if (previous == null) {
+            unset("secondsSincePrevious");
+            return;
+        }
+        long millisecondsSincePrevious = getStart().getTime() - previous.getStart().getTime();
+        set("secondsSincePrevious", (int)(millisecondsSincePrevious / 1000));
+    }
+
     public void stop() {
         set("end", new Date());
     }
@@ -49,6 +62,13 @@ public class Surge extends Model {
         int durationMinutes = durationSeconds / 60;
         durationSeconds %= 60;
         return String.format("%02d:%02d", durationMinutes, durationSeconds);
+    }
+
+    public String getFrequency() {
+        int frequencySeconds = getSecondsSincePrevious();
+        int frequencyMinutes = frequencySeconds / 60;
+        frequencySeconds %= 60;
+        return String.format("%02d:%02d", frequencyMinutes, frequencySeconds);
     }
 
     public String getStartDay(Context context) {
