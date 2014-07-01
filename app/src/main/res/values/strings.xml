@@ -7,10 +7,8 @@
     <string name="frequency">Frequency</string>
     <string name="duration">Duration</string>
     <string name="title_record">Record</string>
-
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_duration">Duration</string>
+    <string name="title_frequency">Frequency</string>
     <string name="action_settings">Settings</string>
 
 </resources>

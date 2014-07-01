@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.bklimt.babywatch.backbone.Model;
 import com.bklimt.babywatch.backbone.ModelListener;
 
 import java.lang.ref.WeakReference;
@@ -20,19 +19,12 @@ import bolts.Capture;
  */
 public class SurgeListFragment extends Fragment {
     /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
-    private static final String ARG_SECTION_NUMBER = "section_number";
-
-    /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static SurgeListFragment newInstance(int sectionNumber) {
+    public static SurgeListFragment newInstance() {
         SurgeListFragment fragment = new SurgeListFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
     }

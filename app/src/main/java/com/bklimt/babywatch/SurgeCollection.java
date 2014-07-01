@@ -3,6 +3,9 @@ package com.bklimt.babywatch;
 import com.bklimt.babywatch.backbone.Collection;
 import com.bklimt.babywatch.backbone.CollectionListener;
 import com.bklimt.babywatch.backbone.Model;
+import com.bklimt.babywatch.backbone.Visitor;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GraphViewDataInterface;
 
 import org.json.JSONArray;
 
@@ -43,6 +46,34 @@ public class SurgeCollection extends Collection<Surge> {
                 current.setPrevious(previous);
                 previous = current;
             }
+        }
+    }
+
+    public GraphViewDataInterface[] getDurationGraphViewData() {
+        synchronized (lock) {
+            int size = size();
+            final GraphViewDataInterface[] data = new GraphViewDataInterface[size];
+            for (int i = 0; i < size; ++i) {
+                Surge surge = get((size - i) - 1);
+                long time = surge.getStart().getTime();
+                double duration = surge.getDurationSeconds();
+                data[i] = new GraphView.GraphViewData(time, duration);
+            }
+            return data;
+        }
+    }
+
+    public GraphViewDataInterface[] getFrequencyGraphViewData() {
+        synchronized (lock) {
+            int size = size();
+            final GraphViewDataInterface[] data = new GraphViewDataInterface[size];
+            for (int i = 0; i < size; ++i) {
+                Surge surge = get((size - i) - 1);
+                long time = surge.getStart().getTime();
+                double frequency = surge.getSecondsSincePrevious();
+                data[i] = new GraphView.GraphViewData(time, frequency);
+            }
+            return data;
         }
     }
 

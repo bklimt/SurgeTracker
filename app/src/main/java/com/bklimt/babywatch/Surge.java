@@ -51,14 +51,18 @@ public class Surge extends Model {
         set("end", new Date());
     }
 
-    public String getDuration() {
+    public int getDurationSeconds() {
         Date end = getEnd();
         if (end == null) {
             end = new Date();
         }
 
         long durationMilliseconds = end.getTime() - getStart().getTime();
-        int durationSeconds = (int)(durationMilliseconds / 1000L);
+        return (int)(durationMilliseconds / 1000L);
+    }
+
+    public String getDurationString() {
+        int durationSeconds = getDurationSeconds();
         int durationMinutes = durationSeconds / 60;
         durationSeconds %= 60;
         return String.format("%02d:%02d", durationMinutes, durationSeconds);

@@ -118,14 +118,19 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return SurgeListFragment.newInstance(position + 1);
+            if (position == 0) {
+                return SurgeListFragment.newInstance();
+            } else if (position == 1) {
+                return SurgeGraphFragment.newInstance(false);
+            } else if (position == 2) {
+                return SurgeGraphFragment.newInstance(true);
+            } else {
+                throw new RuntimeException("Invalid fragment position: " + position);
+            }
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return 3;
         }
 
@@ -136,9 +141,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
                 case 0:
                     return getString(R.string.title_record).toUpperCase(l);
                 case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
+                    return getString(R.string.title_duration).toUpperCase(l);
                 case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
+                    return getString(R.string.title_frequency).toUpperCase(l);
             }
             return null;
         }
