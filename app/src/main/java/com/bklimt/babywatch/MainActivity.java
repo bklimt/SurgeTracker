@@ -121,8 +121,10 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             if (position == 0) {
                 return SurgeListFragment.newInstance();
             } else if (position == 1) {
-                return SurgeGraphFragment.newInstance(false);
+                return AggregateListFragment.newInstance();
             } else if (position == 2) {
+                return SurgeGraphFragment.newInstance(false);
+            } else if (position == 3) {
                 return SurgeGraphFragment.newInstance(true);
             } else {
                 throw new RuntimeException("Invalid fragment position: " + position);
@@ -131,7 +133,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Override
@@ -139,10 +141,12 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return getString(R.string.title_record).toUpperCase(l);
+                    return getString(R.string.title_surges).toUpperCase(l);
                 case 1:
-                    return getString(R.string.title_duration).toUpperCase(l);
+                    return getString(R.string.title_overview).toUpperCase(l);
                 case 2:
+                    return getString(R.string.title_duration).toUpperCase(l);
+                case 3:
                     return getString(R.string.title_frequency).toUpperCase(l);
             }
             return null;

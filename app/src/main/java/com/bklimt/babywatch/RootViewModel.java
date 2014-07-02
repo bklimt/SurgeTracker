@@ -8,12 +8,20 @@ public class RootViewModel extends Model {
         return instance;
     }
 
+    private SurgeCollection surges;
+    private AggregateCollection aggregates;
+
     private RootViewModel() {
-        set("surges", new SurgeCollection());
+        surges = new SurgeCollection();
+        aggregates = new AggregateCollection(surges);
     }
 
     public SurgeCollection getSurges() {
-        return (SurgeCollection) getCollection("surges");
+        return surges;
+    }
+
+    public AggregateCollection getAggregates() {
+        return aggregates;
     }
 
     public Surge getCurrentSurge() {

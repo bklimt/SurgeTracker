@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.format.DateFormat;
 
 import com.bklimt.babywatch.backbone.Model;
-import com.bklimt.babywatch.backbone.ModelListener;
 
 import org.json.JSONObject;
 

@@ -6,7 +6,8 @@
     <string name="stop">Stop</string>
     <string name="frequency">Frequency</string>
     <string name="duration">Duration</string>
-    <string name="title_record">Record</string>
+    <string name="title_surges">Surges</string>
+    <string name="title_overview">Overview</string>
     <string name="title_duration">Duration</string>
     <string name="title_frequency">Frequency</string>
     <string name="action_settings">Settings</string>

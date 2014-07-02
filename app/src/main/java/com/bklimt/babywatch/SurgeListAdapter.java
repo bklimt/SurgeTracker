@@ -6,9 +6,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.bklimt.babywatch.backbone.Model;
-import com.bklimt.babywatch.backbone.ModelListener;
-
 import java.lang.ref.WeakReference;
 
 public class SurgeListAdapter extends ArrayAdapter<Surge> {
