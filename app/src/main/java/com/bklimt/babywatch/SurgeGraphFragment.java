@@ -146,7 +146,7 @@ public class SurgeGraphFragment extends Fragment {
                 }
             }
         });
-        TimerThread.addListener(weakTimerListener.get());
+        TimerThread.atLeastEverySecond(weakTimerListener.get());
 
         FrameLayout layout = (FrameLayout) view;
         layout.addView(graphView);

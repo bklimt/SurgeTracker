@@ -11,7 +11,7 @@ import java.lang.ref.WeakReference;
 public class AggregateListAdapter extends ArrayAdapter<Aggregate> {
     public AggregateListAdapter(Context context) {
         super(context, 0);
-        TimerThread.addListener(new AggregateListAdapterListener(this));
+        TimerThread.atLeastEveryMinute(new AggregateListAdapterListener(this));
     }
 
     /**

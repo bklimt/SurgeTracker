@@ -11,7 +11,7 @@ import java.lang.ref.WeakReference;
 public class SurgeListAdapter extends ArrayAdapter<Surge> {
     public SurgeListAdapter(Context context) {
         super(context, 0);
-        TimerThread.addListener(new SurgeListAdapterListener(this));
+        TimerThread.atLeastEverySecond(new SurgeListAdapterListener(this));
     }
 
     /**
