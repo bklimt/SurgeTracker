@@ -6,12 +6,21 @@ import com.bklimt.babywatch.backbone.Model;
 import com.bklimt.babywatch.backbone.Visitor;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphViewDataInterface;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import org.json.JSONArray;
 
 import java.util.Comparator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SurgeCollection extends Collection<Surge> {
+    private Logger log = Logger.getLogger(getClass().getName());
+
     public SurgeCollection() {
         setComparator(new Comparator<Surge>() {
             @Override
@@ -34,6 +43,21 @@ public class SurgeCollection extends Collection<Surge> {
             @Override
             public void onChanged(Surge model, String key, Object oldValue, Object newValue) {
                 // Start times can't change, so no need to try to fix anything.
+            }
+        });
+
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Surge");
+        query.fromLocalDatastore();
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> surges, ParseException e) {
+                if (e != null) {
+                    log.log(Level.SEVERE, "Unable to load existing surges.", e);
+                    return;
+                }
+                for (ParseObject obj : surges) {
+                    add(new Surge(obj));
+                }
             }
         });
     }
@@ -77,9 +101,11 @@ public class SurgeCollection extends Collection<Surge> {
         }
     }
 
+    /*
     public SurgeCollection(JSONArray array) {
         for (int i = 0; i < array.length(); ++i) {
             add(new Surge(array.optJSONObject(i)));
         }
     }
+    */
 }

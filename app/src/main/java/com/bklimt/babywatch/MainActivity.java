@@ -13,6 +13,8 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.parse.ParseAnalytics;
+
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
 
@@ -34,6 +36,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ParseAnalytics.trackAppOpened(getIntent());
+
         setContentView(R.layout.activity_main);
 
         // Set up the action bar.

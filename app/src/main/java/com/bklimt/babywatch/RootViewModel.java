@@ -1,6 +1,7 @@
 package com.bklimt.babywatch;
 
 import com.bklimt.babywatch.backbone.Model;
+import com.parse.ParseClassName;
 
 public class RootViewModel extends Model {
     private static RootViewModel instance = new RootViewModel();

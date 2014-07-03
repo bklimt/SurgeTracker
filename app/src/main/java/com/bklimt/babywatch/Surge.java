@@ -4,16 +4,37 @@ import android.content.Context;
 import android.text.format.DateFormat;
 
 import com.bklimt.babywatch.backbone.Model;
+import com.parse.ParseClassName;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 import org.json.JSONObject;
 
 import java.util.Date;
 
 public class Surge extends Model {
+    ParseObject parseObject = new ParseObject("Surge");
+
     public Surge() {
-        set("start", new Date());
+        Date start = new Date();
+        set("start", start);
+        parseObject.put("start", start);
+        parseObject.pinInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+            }
+        });
     }
 
+    public Surge(ParseObject obj) {
+        set("start", obj.get("start"));
+        if (obj.has("end")) {
+            set("end", obj.get("end"));
+        }
+    }
+
+    /*
     public Surge(JSONObject json) {
         JSONObject start = json.optJSONObject("start");
         JSONObject end = json.optJSONObject("end");
@@ -24,6 +45,7 @@ public class Surge extends Model {
             set("end", end);
         }
     }
+    */
 
     public Date getStart() {
         return getDate("start");
@@ -47,7 +69,14 @@ public class Surge extends Model {
     }
 
     public void stop() {
-        set("end", new Date());
+        Date end = new Date();
+        set("end", end);
+        parseObject.put("end", end);
+        parseObject.pinInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+            }
+        });
     }
 
     public int getDurationSeconds() {
