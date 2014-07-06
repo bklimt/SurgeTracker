@@ -42,7 +42,7 @@ public class SurgeCollection extends Collection<Surge> {
 
             @Override
             public void onChanged(Surge model, String key, Object oldValue, Object newValue) {
-                // Start times can't change, so no need to try to fix anything.
+                updatePrevious();
             }
         });
 

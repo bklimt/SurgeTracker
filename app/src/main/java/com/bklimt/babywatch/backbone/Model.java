@@ -5,7 +5,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.SimpleTimeZone;
@@ -20,10 +22,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
 import com.parse.ParseObject;
@@ -198,9 +204,9 @@ public class Model {
         }
     }
 
-    public void bindToEditText(final Activity activity, int id, final String key) {
+    public void bindToEditText(final View view, int id, final String key) {
         synchronized (lock) {
-            EditText editText = (EditText) activity.findViewById(id);
+            EditText editText = (EditText) view.findViewById(id);
             editText.setText((String) get(key));
 
             TextWatcher textWatcher = new TextWatcher() {
@@ -221,13 +227,13 @@ public class Model {
             editText.addTextChangedListener(textWatcher);
 
             final WeakReference<EditText> weakEditText = new WeakReference<EditText>(editText);
-            final Capture<ModelListener<Model>> weakListener = new Capture<ModelListener<Model>>();
-            weakListener.set(new ModelListener<Model>() {
+            final Capture<ModelListener<Model>> listener = new Capture<ModelListener<Model>>();
+            listener.set(new ModelListener<Model>() {
                 @Override
                 public void onChanged(Model model, String key, Object oldValue, Object newValue) {
                     EditText editText = weakEditText.get();
                     if (editText == null) {
-                        removeListener(weakListener.get());
+                        removeListener(listener.get());
                         return;
                     }
 
@@ -236,23 +242,23 @@ public class Model {
                     }
                 }
             });
-            addListener(weakListener.get());
+            addListener(listener.get());
         }
     }
 
-    public void bindToTextView(final Activity activity, int id, final String key) {
+    public void bindToTextView(final View view, int id, final String key) {
         synchronized (lock) {
-            TextView textView = (TextView) activity.findViewById(id);
+            TextView textView = (TextView) view.findViewById(id);
             textView.setText((String) get(key));
 
             final WeakReference<TextView> weakTextView = new WeakReference<TextView>(textView);
-            final Capture<ModelListener<Model>> weakListener = new Capture<ModelListener<Model>>();
-            weakListener.set(new ModelListener<Model>() {
+            final Capture<ModelListener<Model>> listener = new Capture<ModelListener<Model>>();
+            listener.set(new ModelListener<Model>() {
                 @Override
                 public void onChanged(Model model, String key, Object oldValue, Object newValue) {
                     TextView textView = weakTextView.get();
                     if (textView == null) {
-                        removeListener(weakListener.get());
+                        removeListener(listener.get());
                         return;
                     }
 
@@ -261,14 +267,13 @@ public class Model {
                     }
                 }
             });
-            addListener(weakListener.get());
+            addListener(listener.get());
         }
     }
 
-    public void bindToToggleButton(final Activity activity, int id, final String key) {
-        ToggleButton toggleButton = (ToggleButton) activity.findViewById(id);
-        Boolean on = (Boolean) get(key);
-        toggleButton.setChecked(on != null && on.booleanValue());
+    public void bindToToggleButton(final View view, int id, final String key) {
+        ToggleButton toggleButton = (ToggleButton) view.findViewById(id);
+        toggleButton.setChecked(getBoolean(key));
         toggleButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -277,19 +282,132 @@ public class Model {
         });
 
         final WeakReference<ToggleButton> weakToggleButton = new WeakReference<ToggleButton>(toggleButton);
-        final Capture<ModelListener<Model>> weakListener = new Capture<ModelListener<Model>>();
-        weakListener.set(new ModelListener<Model>() {
+        final Capture<ModelListener<Model>> listener = new Capture<ModelListener<Model>>();
+        listener.set(new ModelListener<Model>() {
             @Override
             public void onChanged(Model model, String key, Object oldValue, Object newValue) {
                 ToggleButton toggleButton = weakToggleButton.get();
                 if (toggleButton == null) {
-                    removeListener(weakListener.get());
+                    removeListener(listener.get());
                     return;
                 }
 
                 toggleButton.setChecked(newValue != null && ((Boolean) newValue).booleanValue());
             }
         });
-        addListener(weakListener.get());
+        addListener(listener.get());
     }
+
+    /*
+    public void bindToNumberPicker(final View view, int id, final String key) {
+        NumberPicker numberPicker = (NumberPicker) view.findViewById(id);
+        numberPicker.setValue(getInt(key));
+        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                set(key, newVal);
+            }
+        });
+
+        final WeakReference<NumberPicker> weakNumberPicker = new WeakReference<NumberPicker>(numberPicker);
+        final Capture<ModelListener<Model>> listener = new Capture<ModelListener<Model>>();
+        listener.set(new ModelListener<Model>() {
+            @Override
+            public void onChanged(Model model, String key, Object oldValue, Object newValue) {
+                NumberPicker numberPicker = weakNumberPicker.get();
+                if (numberPicker == null) {
+                    removeListener(listener.get());
+                    return;
+                }
+
+                numberPicker.setValue(((Number) newValue).intValue());
+            }
+        });
+        addListener(listener.get());
+    }
+
+    public void bindToDatePicker(final View view, int id, final String key) {
+        Date date = getDate(key);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        DatePicker datePicker = (DatePicker) view.findViewById(id);
+        datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
+                    @Override
+                    public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Date date = getDate(key);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(date);
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, monthOfYear);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        date = calendar.getTime();
+                        set(key, date);
+                    }
+                });
+
+        final WeakReference<DatePicker> weakDatePicker = new WeakReference<DatePicker>(datePicker);
+        final Capture<ModelListener<Model>> listener = new Capture<ModelListener<Model>>();
+        listener.set(new ModelListener<Model>() {
+            @Override
+            public void onChanged(Model model, String key, Object oldValue, Object newValue) {
+                DatePicker datePicker = weakDatePicker.get();
+                if (datePicker == null) {
+                    removeListener(listener.get());
+                    return;
+                }
+
+                Date date = (Date) newValue;
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                int year = calendar.get(Calendar.YEAR);
+                int monthOfYear = calendar.get(Calendar.MONTH);
+                int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                datePicker.init(year, monthOfYear, dayOfMonth, null);
+            }
+        });
+        addListener(listener.get());
+    }
+
+    public void bindToTimePicker(final View view, int id, final String key) {
+        Date date = getDate(key);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        TimePicker timePicker = (TimePicker) view.findViewById(id);
+        timePicker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
+        timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
+        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                Date date = getDate(key);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                calendar.set(Calendar.MINUTE, minute);
+                date = calendar.getTime();
+                set(key, date);
+            }
+        });
+
+        final WeakReference<TimePicker> weakTimePicker = new WeakReference<TimePicker>(timePicker);
+        final Capture<ModelListener<Model>> listener = new Capture<ModelListener<Model>>();
+        listener.set(new ModelListener<Model>() {
+            @Override
+            public void onChanged(Model model, String key, Object oldValue, Object newValue) {
+                TimePicker timePicker = weakTimePicker.get();
+                if (timePicker == null) {
+                    removeListener(listener.get());
+                    return;
+                }
+
+                Date date = (Date) newValue;
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                timePicker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
+                timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
+            }
+        });
+        addListener(listener.get());
+    }
+    */
 }

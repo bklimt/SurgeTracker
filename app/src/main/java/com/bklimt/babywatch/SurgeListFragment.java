@@ -39,7 +39,7 @@ public class SurgeListFragment extends Fragment {
 
         final RootViewModel root = RootViewModel.get();
 
-        final SurgeListAdapter surgeListAdapter = new SurgeListAdapter(getActivity());
+        final SurgeListAdapter surgeListAdapter = new SurgeListAdapter(getActivity(), this);
         final ListView surgeListView = (ListView) rootView.findViewById(R.id.surge_list);
         surgeListView.setAdapter(surgeListAdapter);
         root.getSurges().bindToArrayAdapter(surgeListAdapter);

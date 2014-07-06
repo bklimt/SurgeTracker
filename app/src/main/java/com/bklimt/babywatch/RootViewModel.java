@@ -29,6 +29,14 @@ public class RootViewModel extends Model {
         return (Surge) getModel("currentSurge");
     }
 
+    public void selectSurge(Surge surge) {
+        set("selectedSurge", surge);
+    }
+
+    public Surge getSelectedSurge() {
+        return (Surge) getModel("selectedSurge");
+    }
+
     public void startSurge() {
         synchronized (lock) {
             if (getModel("currentSurge") != null) {

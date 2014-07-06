@@ -1,6 +1,8 @@
 package com.bklimt.babywatch;
 
+import android.app.Fragment;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -9,8 +11,11 @@ import android.widget.TextView;
 import java.lang.ref.WeakReference;
 
 public class SurgeListAdapter extends ArrayAdapter<Surge> {
-    public SurgeListAdapter(Context context) {
+    private Fragment fragment;
+
+    public SurgeListAdapter(Context context, Fragment aFragment) {
         super(context, 0);
+        fragment = aFragment;
         TimerThread.atLeastEverySecond(new SurgeListAdapterListener(this));
     }
 
@@ -47,6 +52,7 @@ public class SurgeListAdapter extends ArrayAdapter<Surge> {
             view = View.inflate(getContext(), R.layout.list_item_surge, null);
         }
 
+        final RootViewModel root = RootViewModel.get();
         final Surge surge = getItem(position);
 
         final TextView durationView = (TextView) view.findViewById(R.id.duration);
@@ -58,6 +64,59 @@ public class SurgeListAdapter extends ArrayAdapter<Surge> {
         frequencyView.setText(surge.getFrequency());
         startDateView.setText(surge.getStartDay(this.getContext()));
         startTimeView.setText(surge.getStartTime(this.getContext()));
+
+        durationView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (surge.getEnd() == null) {
+                    return;
+                }
+                root.selectSurge(surge);
+                SurgeDurationDialogFragment dialog = new SurgeDurationDialogFragment();
+                dialog.show(fragment.getFragmentManager(), "surge_duration");
+            }
+        });
+
+        startDateView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (surge.getEnd() == null) {
+                    return;
+                }
+                root.selectSurge(surge);
+                SurgeStartDialogFragment dialog = new SurgeStartDialogFragment();
+                dialog.show(fragment.getFragmentManager(), "surge_start");
+            }
+        });
+
+        startTimeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (surge.getEnd() == null) {
+                    return;
+                }
+                root.selectSurge(surge);
+                SurgeStartDialogFragment dialog = new SurgeStartDialogFragment();
+                dialog.show(fragment.getFragmentManager(), "surge_start");
+            }
+        });
+
+        View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (surge.getEnd() == null) {
+                    return false;
+                }
+                root.selectSurge(surge);
+                SurgeDeletionDialogFragment dialog = new SurgeDeletionDialogFragment();
+                dialog.show(fragment.getFragmentManager(), "surge_delete");
+                return true;
+            }
+        };
+        view.setOnLongClickListener(onLongClickListener);
+        durationView.setOnLongClickListener(onLongClickListener);
+        startDateView.setOnLongClickListener(onLongClickListener);
+        startTimeView.setOnLongClickListener(onLongClickListener);
 
         /*
          * No need to bind these UI elements, because the Collection is already bound to the list
