@@ -1,7 +1,17 @@
 package com.bklimt.babywatch;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+
 import com.bklimt.babywatch.backbone.Model;
+import com.bklimt.babywatch.backbone.Visitor;
 import com.parse.ParseClassName;
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 
 public class RootViewModel extends Model {
     private static RootViewModel instance = new RootViewModel();
@@ -56,5 +66,35 @@ public class RootViewModel extends Model {
             getCurrentSurge().stop();
             unset("currentSurge");
         }
+    }
+
+    private void writeCsv(final Context context, final Writer writer) throws IOException {
+        SurgeCollection surges = getSurges();
+        AggregateCollection aggregates = getAggregates();
+
+        writer.write("Duration (mm:ss),Time Between (mm:ss),Start time\n");
+        surges.each(new Visitor<Surge>() {
+            @Override
+            public void visit(Surge surge) throws Exception {
+                writer.write(surge.getDurationString());
+                writer.write(",");
+                writer.write(surge.getFrequency());
+                writer.write(",");
+                writer.write(surge.getStartDay(context));
+                writer.write(" ");
+                writer.write(surge.getStartTime(context));
+                writer.write("\n");
+            }
+        });
+    }
+
+    public void sendEmail(Context context) throws IOException {
+        StringWriter writer = new StringWriter();
+        writeCsv(context, writer);
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "", null));
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Surge Report");
+        intent.putExtra(Intent.EXTRA_TEXT, writer.getBuffer().toString());
+        context.startActivity(Intent.createChooser(intent, "Send email..."));
     }
 }

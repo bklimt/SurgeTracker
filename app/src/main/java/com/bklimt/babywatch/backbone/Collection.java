@@ -160,7 +160,11 @@ public class Collection<T extends Model> {
     public void each(Visitor<T> visitor) {
         synchronized (lock) {
             for (T item : items) {
-                visitor.visit(item);
+                try {
+                    visitor.visit(item);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
