@@ -1,4 +1,4 @@
-package com.bklimt.babywatch;
+package com.bklimt.surgetracker.view;
 
 import android.os.Bundle;
 import android.app.Fragment;
@@ -7,9 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
-import com.bklimt.babywatch.backbone.CollectionListener;
+import com.bklimt.surgetracker.R;
+import com.bklimt.surgetracker.TimerThread;
+import com.bklimt.surgetracker.backbone.CollectionListener;
+import com.bklimt.surgetracker.model.RootViewModel;
+import com.bklimt.surgetracker.model.Surge;
+import com.bklimt.surgetracker.model.SurgeCollection;
 import com.jjoe64.graphview.CustomLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphViewDataInterface;

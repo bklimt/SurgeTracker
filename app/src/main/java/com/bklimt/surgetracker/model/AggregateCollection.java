@@ -1,8 +1,8 @@
-package com.bklimt.babywatch;
+package com.bklimt.surgetracker.model;
 
-import com.bklimt.babywatch.backbone.Collection;
-import com.bklimt.babywatch.backbone.CollectionListener;
-import com.bklimt.babywatch.backbone.Visitor;
+import com.bklimt.surgetracker.backbone.Collection;
+import com.bklimt.surgetracker.backbone.CollectionListener;
+import com.bklimt.surgetracker.backbone.Visitor;
 
 import java.util.ArrayList;
 import java.util.Collections;

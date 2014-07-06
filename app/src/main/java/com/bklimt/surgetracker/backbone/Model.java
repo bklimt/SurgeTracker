@@ -1,13 +1,11 @@
-package com.bklimt.babywatch.backbone;
+package com.bklimt.surgetracker.backbone;
 
 import java.lang.ref.WeakReference;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.SimpleTimeZone;
@@ -17,7 +15,6 @@ import java.util.logging.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
@@ -25,14 +22,9 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.ToggleButton;
-
-import com.parse.ParseObject;
 
 import bolts.Capture;
 

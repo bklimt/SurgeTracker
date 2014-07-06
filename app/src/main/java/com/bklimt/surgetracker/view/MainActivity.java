@@ -1,4 +1,4 @@
-package com.bklimt.babywatch;
+package com.bklimt.surgetracker.view;
 
 import java.util.Locale;
 
@@ -14,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.bklimt.surgetracker.R;
+import com.bklimt.surgetracker.model.RootViewModel;
 import com.parse.ParseAnalytics;
 
 

@@ -1,15 +1,17 @@
-package com.bklimt.babywatch;
+package com.bklimt.surgetracker.view;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.NumberPicker;
 import android.widget.TimePicker;
+
+import com.bklimt.surgetracker.R;
+import com.bklimt.surgetracker.model.RootViewModel;
+import com.bklimt.surgetracker.model.Surge;
 
 import java.util.Calendar;
 import java.util.Date;

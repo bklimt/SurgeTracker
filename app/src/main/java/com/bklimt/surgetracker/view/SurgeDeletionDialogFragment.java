@@ -1,10 +1,13 @@
-package com.bklimt.babywatch;
+package com.bklimt.surgetracker.view;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+
+import com.bklimt.surgetracker.model.RootViewModel;
+import com.bklimt.surgetracker.model.Surge;
 
 /**
  * Created by klimt on 7/5/14.

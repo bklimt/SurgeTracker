@@ -1,15 +1,13 @@
-package com.bklimt.babywatch;
+package com.bklimt.surgetracker.model;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.bklimt.babywatch.backbone.Model;
-import com.bklimt.babywatch.backbone.Visitor;
-import com.parse.ParseClassName;
+import com.bklimt.surgetracker.backbone.Model;
+import com.bklimt.surgetracker.backbone.Visitor;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 

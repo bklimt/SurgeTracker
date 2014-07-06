@@ -1,16 +1,13 @@
-package com.bklimt.babywatch;
+package com.bklimt.surgetracker.model;
 
 import android.content.Context;
 import android.text.format.DateFormat;
 
-import com.bklimt.babywatch.backbone.Model;
+import com.bklimt.surgetracker.backbone.Model;
 import com.parse.DeleteCallback;
-import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
-
-import org.json.JSONObject;
 
 import java.util.Date;
 import java.util.logging.Level;

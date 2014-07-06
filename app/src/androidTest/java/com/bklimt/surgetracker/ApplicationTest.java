@@ -1,10 +1,10 @@
-package com.bklimt.babywatch;
+package com.bklimt.surgetracker;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
 
-import com.bklimt.babywatch.backbone.Collection;
-import com.bklimt.babywatch.backbone.Model;
+import com.bklimt.surgetracker.backbone.Collection;
+import com.bklimt.surgetracker.backbone.Model;
 
 import java.util.Comparator;
 

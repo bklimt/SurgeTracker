@@ -1,17 +1,13 @@
-package com.bklimt.babywatch;
+package com.bklimt.surgetracker.model;
 
-import com.bklimt.babywatch.backbone.Collection;
-import com.bklimt.babywatch.backbone.CollectionListener;
-import com.bklimt.babywatch.backbone.Model;
-import com.bklimt.babywatch.backbone.Visitor;
+import com.bklimt.surgetracker.backbone.Collection;
+import com.bklimt.surgetracker.backbone.CollectionListener;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphViewDataInterface;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-
-import org.json.JSONArray;
 
 import java.util.Comparator;
 import java.util.List;

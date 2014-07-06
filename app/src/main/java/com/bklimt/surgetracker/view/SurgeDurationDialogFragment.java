@@ -1,4 +1,4 @@
-package com.bklimt.babywatch;
+package com.bklimt.surgetracker.view;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,6 +7,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.NumberPicker;
+
+import com.bklimt.surgetracker.R;
+import com.bklimt.surgetracker.model.RootViewModel;
+import com.bklimt.surgetracker.model.Surge;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -1,12 +1,16 @@
-package com.bklimt.babywatch;
+package com.bklimt.surgetracker.view;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.bklimt.surgetracker.R;
+import com.bklimt.surgetracker.TimerThread;
+import com.bklimt.surgetracker.model.RootViewModel;
+import com.bklimt.surgetracker.model.Surge;
 
 import java.lang.ref.WeakReference;
 

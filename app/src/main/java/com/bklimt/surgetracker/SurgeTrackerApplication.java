@@ -1,4 +1,4 @@
-package com.bklimt.babywatch;
+package com.bklimt.surgetracker;
 
 import android.app.Application;
 
@@ -7,7 +7,7 @@ import com.parse.Parse;
 /**
  * Created by klimt on 7/3/14.
  */
-public class BabyWatchApplication extends Application {
+public class SurgeTrackerApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();

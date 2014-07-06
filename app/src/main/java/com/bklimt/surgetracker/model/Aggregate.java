@@ -1,9 +1,9 @@
-package com.bklimt.babywatch;
+package com.bklimt.surgetracker.model;
 
 import android.content.Context;
 import android.text.format.DateFormat;
 
-import com.bklimt.babywatch.backbone.Model;
+import com.bklimt.surgetracker.backbone.Model;
 
 import java.util.Date;
 import java.util.List;
@@ -30,19 +30,19 @@ public class Aggregate extends Model {
         set("averageFrequency", (int)Math.round((double) totalFrequency / surges.size()));
     }
 
-    int getCount() {
+    public int getCount() {
         return getInt("count");
     }
 
-    Date getSince() {
+    public Date getSince() {
         return getDate("since");
     }
 
-    int getAverageDurationSeconds() {
+    public int getAverageDurationSeconds() {
         return getInt("averageDuration");
     }
 
-    int getAverageFrequencySeconds() {
+    public int getAverageFrequencySeconds() {
         return getInt("averageFrequency");
     }
 
