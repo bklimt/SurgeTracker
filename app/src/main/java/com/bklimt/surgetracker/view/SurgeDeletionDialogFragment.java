@@ -23,7 +23,7 @@ public class SurgeDeletionDialogFragment extends DialogFragment {
                 RootViewModel root = RootViewModel.get();
                 Surge surge = root.getSelectedSurge();
                 root.getSurges().remove(surge);
-                surge.unpin();
+                surge.remove();
             }
         });
 

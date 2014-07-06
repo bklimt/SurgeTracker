@@ -4,15 +4,12 @@ import com.bklimt.surgetracker.backbone.Collection;
 import com.bklimt.surgetracker.backbone.CollectionListener;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphViewDataInterface;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import java.util.Comparator;
-import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import bolts.Continuation;
+import bolts.Task;
 
 public class SurgeCollection extends Collection<Surge> {
     private Logger log = Logger.getLogger(getClass().getName());
@@ -39,21 +36,6 @@ public class SurgeCollection extends Collection<Surge> {
             @Override
             public void onChanged(Surge model, String key, Object oldValue, Object newValue) {
                 updatePrevious();
-            }
-        });
-
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Surge");
-        query.fromLocalDatastore();
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> surges, ParseException e) {
-                if (e != null) {
-                    log.log(Level.SEVERE, "Unable to load existing surges.", e);
-                    return;
-                }
-                for (ParseObject obj : surges) {
-                    add(new Surge(obj));
-                }
             }
         });
     }

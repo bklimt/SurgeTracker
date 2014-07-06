@@ -18,7 +18,11 @@ import android.widget.Toast;
 
 import com.bklimt.surgetracker.R;
 import com.bklimt.surgetracker.model.RootViewModel;
+import com.bklimt.surgetracker.model.SurgeParseObject;
 import com.parse.ParseAnalytics;
+
+import bolts.Continuation;
+import bolts.Task;
 
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
@@ -110,12 +114,29 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             try {
                 RootViewModel.get().sendEmail(this);
             } catch (Exception e) {
-                Toast toast = new Toast(this);
-                toast.setText("Unable to send email.\n" + e);
-                toast.setDuration(Toast.LENGTH_LONG);
-                toast.show();
+                logger.log(Level.SEVERE, "Unable to send email.", e);
+                Toast.makeText(MainActivity.this, "Unable to send email.\n" + e, Toast.LENGTH_LONG).show();
             }
             return true;
+        } else if (id == R.id.action_sync) {
+            logger.info("Syncing data to the cloud...");
+            Toast.makeText(MainActivity.this, "Syncing data to the cloud...", Toast.LENGTH_LONG).show();
+            SurgeParseObject.syncAsync().continueWith(new Continuation<Void, Void>() {
+                @Override
+                public Void then(Task<Void> task) throws Exception {
+                    if (task.isFaulted()) {
+                        logger.log(Level.SEVERE, "Unable to sync data", task.getError());
+                        Toast.makeText(MainActivity.this, "Unable to sync data.\n" + task.getError(), Toast.LENGTH_LONG).show();
+                    } else if (task.isCancelled()) {
+                        logger.info("Cancelled data sync.");
+                        Toast.makeText(MainActivity.this, "Cancelled data sync.", Toast.LENGTH_LONG).show();
+                    } else {
+                        logger.info("Sync complete.");
+                        Toast.makeText(MainActivity.this, "Sync complete.", Toast.LENGTH_LONG).show();
+                    }
+                    return null;
+                }
+            }, Task.UI_THREAD_EXECUTOR);
         }
         return super.onOptionsItemSelected(item);
     }

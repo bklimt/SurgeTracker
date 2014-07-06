@@ -4,29 +4,27 @@ import android.content.Context;
 import android.text.format.DateFormat;
 
 import com.bklimt.surgetracker.backbone.Model;
-import com.parse.DeleteCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.SaveCallback;
 
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Surge extends Model {
-    private Logger logger = Logger.getLogger(getClass().getName());
+import bolts.Task;
 
-    ParseObject parseObject;
+public class Surge extends Model {
+    private static final Logger logger = Logger.getLogger(Surge.class.getName());
+
+    private SurgeParseObject parseObject;
 
     public Surge() {
         Date start = new Date();
         set("start", start);
 
-        parseObject = new ParseObject("Surge");
+        parseObject = new SurgeParseObject();
         pin();
     }
 
-    public Surge(ParseObject obj) {
+    public Surge(SurgeParseObject obj) {
         set("start", obj.get("start"));
         if (obj.has("end")) {
             set("end", obj.get("end"));
@@ -37,7 +35,7 @@ public class Surge extends Model {
         logger.log(Level.INFO, "Loaded Surge with start=" + getStart() + ", end=" + getEnd());
     }
 
-    private void pin() {
+    private Task<Void> pin() {
         Date start;
         Date end;
         synchronized (lock) {
@@ -53,30 +51,11 @@ public class Surge extends Model {
             parseObject.put("end", end);
         }
 
-        logger.log(Level.INFO, "Pinning Surge with start=" + start + ", end=" + end);
-        parseObject.pinInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    logger.log(Level.INFO, "Pinned successfully.");
-                } else {
-                    logger.log(Level.SEVERE, "Unable to pin Surge.", e);
-                }
-            }
-        });
+        return parseObject.pinAsync();
     }
 
-    public void unpin() {
-        parseObject.unpinInBackground(new DeleteCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    logger.log(Level.INFO, "Unpinned successfully.");
-                } else {
-                    logger.log(Level.SEVERE, "Unable to unpin Surge.", e);
-                }
-            }
-        });
+    public Task<Void> remove() {
+        return parseObject.removeAsync();
     }
 
     /*
