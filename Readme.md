@@ -1,10 +1,10 @@
-BabyWatch
-=========
+SurgeTracker
+============
 
 Copyright (c) 2014, Bryan Klimt
 Licensed under the MIT License (See LICENSE)
 
-=== Third party libraries ===
+### Third party libraries
 
 Uses GraphView
 http://android-graphview.org/
