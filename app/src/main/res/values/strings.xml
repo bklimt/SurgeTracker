@@ -4,12 +4,16 @@
     <string name="app_name">Surge Tracker</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
-    <string name="frequency">Frequency</string>
+    <string name="time_between">Time Between</string>
     <string name="duration">Duration</string>
     <string name="title_surges">Surges</string>
     <string name="title_overview">Overview</string>
     <string name="title_duration">Duration</string>
     <string name="title_frequency">Frequency</string>
     <string name="action_email">Email</string>
+    <string name="average_duration">Average Duration (mm:ss)</string>
+    <string name="average_time_between">Average Time Between (mm:ss)</string>
+    <string name="since">Since</string>
+    <string name="number_of_surges"># of Surges</string>
 
 </resources>

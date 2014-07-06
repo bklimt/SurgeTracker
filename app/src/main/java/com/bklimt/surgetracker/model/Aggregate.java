@@ -27,7 +27,7 @@ public class Aggregate extends Model {
         set("count", surges.size());
         set("since", since);
         set("averageDuration", (int)Math.round((double) totalDuration / surges.size()));
-        set("averageFrequency", (int)Math.round((double) totalFrequency / surges.size()));
+        set("averageTimeBetween", (int)Math.round((double) totalFrequency / surges.size()));
     }
 
     public int getCount() {
@@ -42,8 +42,8 @@ public class Aggregate extends Model {
         return getInt("averageDuration");
     }
 
-    public int getAverageFrequencySeconds() {
-        return getInt("averageFrequency");
+    public int getAverageSecondsBetween() {
+        return getInt("averageTimeBetween");
     }
 
     public String getAverageDurationString() {
@@ -53,11 +53,11 @@ public class Aggregate extends Model {
         return String.format("%02d:%02d", durationMinutes, durationSeconds);
     }
 
-    public String getAverageFrequencyString() {
-        int frequencySeconds = getAverageFrequencySeconds();
-        int frequencyMinutes = frequencySeconds / 60;
-        frequencySeconds %= 60;
-        return String.format("%02d:%02d", frequencyMinutes, frequencySeconds);
+    public String getAverageTimeBetweenString() {
+        int secondsBetween = getAverageSecondsBetween();
+        int minutesBetween = secondsBetween / 60;
+        secondsBetween %= 60;
+        return String.format("%02d:%02d", minutesBetween, secondsBetween);
     }
 
     public String getSinceDay(Context context) {

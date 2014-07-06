@@ -21,7 +21,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="# of Surges"
+            android:text="@string/number_of_surges"
             android:id="@+id/surge_count"
             android:layout_weight="1"
             android:gravity="center" />
@@ -30,7 +30,16 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Average Duration"
+            android:text="@string/since"
+            android:id="@+id/since"
+            android:layout_weight="1"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/average_duration"
             android:id="@+id/average_duration"
             android:layout_weight="1"
             android:gravity="center" />
@@ -39,20 +48,10 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Average Frequency"
+            android:text="@string/average_time_between"
             android:id="@+id/average_frequency"
             android:layout_weight="1"
             android:gravity="center" />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Since"
-            android:id="@+id/since"
-            android:layout_weight="1"
-            android:gravity="center" />
-
 
     </LinearLayout>
 

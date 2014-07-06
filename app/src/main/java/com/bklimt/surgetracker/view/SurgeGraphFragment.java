@@ -88,7 +88,7 @@ public class SurgeGraphFragment extends Fragment {
                     date.setTime((long) value);
                     return DateFormat.getTimeFormat(graphView.getContext()).format(date);
                 } else {
-                    int seconds = (int) value;
+                    int seconds = (int) (isFrequency ? -value : value);
                     int minutes = seconds / 60;
                     seconds = seconds % 60;
                     return String.format("%02d:%02d", minutes, seconds);

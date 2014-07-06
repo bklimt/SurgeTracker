@@ -90,7 +90,7 @@ public class SurgeCollection extends Collection<Surge> {
             for (int i = 0; i < size; ++i) {
                 Surge surge = get((size - i) - 1);
                 long time = surge.getStart().getTime();
-                double frequency = surge.getSecondsSincePrevious();
+                double frequency = -surge.getSecondsSincePrevious();
                 data[i] = new GraphView.GraphViewData(time, frequency);
             }
             return data;

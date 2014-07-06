@@ -1,6 +1,8 @@
 package com.bklimt.surgetracker.view;
 
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import android.app.Activity;
 import android.app.ActionBar;
@@ -20,6 +22,7 @@ import com.parse.ParseAnalytics;
 
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
+    private Logger logger = Logger.getLogger(getClass().getName());
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -76,6 +79,16 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
                     actionBar.newTab()
                             .setText(sectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        logger.log(Level.INFO, "About to save instance state for bundle: " + outState);
+        try {
+            super.onSaveInstanceState(outState);
+        } catch (NullPointerException npe) {
+            logger.log(Level.SEVERE, "NullPointerException in onSaveInstanceState.", npe);
         }
     }
 

@@ -76,7 +76,7 @@ public class RootViewModel extends Model {
             public void visit(Surge surge) throws Exception {
                 writer.write(surge.getDurationString());
                 writer.write(",");
-                writer.write(surge.getFrequency());
+                writer.write(surge.getTimeBetweenString());
                 writer.write(",");
                 writer.write(surge.getStartDay(context));
                 writer.write(" ");

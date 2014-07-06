@@ -30,7 +30,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/frequency"
+            android:text="@string/time_between"
             android:id="@+id/frequency"
             android:layout_weight="1"
             android:gravity="center" />

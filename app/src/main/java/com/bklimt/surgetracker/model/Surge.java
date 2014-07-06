@@ -157,11 +157,11 @@ public class Surge extends Model {
         return String.format("%02d:%02d", durationMinutes, durationSeconds);
     }
 
-    public String getFrequency() {
-        int frequencySeconds = getSecondsSincePrevious();
-        int frequencyMinutes = frequencySeconds / 60;
-        frequencySeconds %= 60;
-        return String.format("%02d:%02d", frequencyMinutes, frequencySeconds);
+    public String getTimeBetweenString() {
+        int secondsBetween = getSecondsSincePrevious();
+        int minutesBetween = secondsBetween / 60;
+        secondsBetween %= 60;
+        return String.format("%02d:%02d", minutesBetween, secondsBetween);
     }
 
     public String getStartDay(Context context) {

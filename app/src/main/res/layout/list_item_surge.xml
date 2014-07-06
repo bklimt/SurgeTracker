@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,7 +11,8 @@
         android:text="00:00"
         android:id="@+id/duration"
         android:layout_weight="1"
-        android:gravity="center" />
+        android:gravity="center"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:layout_width="fill_parent"
@@ -19,7 +21,8 @@
         android:text="00:00"
         android:id="@+id/frequency"
         android:layout_weight="1"
-        android:gravity="center" />
+        android:gravity="center"
+        tools:ignore="HardcodedText" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -33,13 +36,15 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="4:57pm"
-            android:id="@+id/start_time" />
+            android:id="@+id/start_time"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="July 4, 2014"
-            android:id="@+id/start_date" />
+            android:id="@+id/start_date"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 </LinearLayout>

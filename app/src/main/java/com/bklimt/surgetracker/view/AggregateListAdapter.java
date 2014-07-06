@@ -63,7 +63,7 @@ public class AggregateListAdapter extends ArrayAdapter<Aggregate> {
 
         surgeCountView.setText(String.format("%d", aggregate.getCount()));
         averageDurationView.setText(aggregate.getAverageDurationString());
-        averageFrequencyView.setText(aggregate.getAverageFrequencyString());
+        averageFrequencyView.setText(aggregate.getAverageTimeBetweenString());
         sinceView.setText(aggregate.getSinceTime(this.getContext()));
 
         /*

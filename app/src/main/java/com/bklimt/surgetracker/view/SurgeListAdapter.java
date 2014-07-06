@@ -65,7 +65,7 @@ public class SurgeListAdapter extends ArrayAdapter<Surge> {
         final TextView startTimeView = (TextView) view.findViewById(R.id.start_time);
 
         durationView.setText(surge.getDurationString());
-        frequencyView.setText(surge.getFrequency());
+        frequencyView.setText(surge.getTimeBetweenString());
         startDateView.setText(surge.getStartDay(this.getContext()));
         startTimeView.setText(surge.getStartTime(this.getContext()));
 
