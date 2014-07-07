@@ -1,0 +1,11 @@
+doctype html
+html
+  head
+    title Surges
+  body
+    h1 Surges
+    ol
+      each surge in surges
+        li= surge.id
+        li= surge.duration()
+      

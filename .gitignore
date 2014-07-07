@@ -1,5 +1,9 @@
-.gradle
+*.swp
 .DS_Store
+
+.gradle
 /android/local.properties
 /android/.idea/workspace.xml
 /android/build
+
+/parse/config/global.json

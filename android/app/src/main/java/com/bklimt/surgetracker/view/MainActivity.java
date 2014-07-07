@@ -118,7 +118,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
                 Toast.makeText(MainActivity.this, "Unable to send email.\n" + e, Toast.LENGTH_LONG).show();
             }
             return true;
-        } else if (id == R.id.action_sync) {
+        /*} else if (id == R.id.action_sync) {
             logger.info("Syncing data to the cloud...");
             Toast.makeText(MainActivity.this, "Syncing data to the cloud...", Toast.LENGTH_LONG).show();
             SurgeParseObject.syncAsync().continueWith(new Continuation<Void, Void>() {
@@ -137,7 +137,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
                     return null;
                 }
             }, Task.UI_THREAD_EXECUTOR);
-        }
+        */}
         return super.onOptionsItemSelected(item);
     }
 

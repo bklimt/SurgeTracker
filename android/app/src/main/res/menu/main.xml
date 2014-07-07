@@ -5,8 +5,8 @@
         android:title="@string/action_email"
         android:orderInCategory="100"
         android:showAsAction="always" />
-    <item android:id="@+id/action_sync"
+    <!--<item android:id="@+id/action_sync"
         android:title="@string/action_sync"
         android:orderInCategory="101"
-        android:showAsAction="always" />
+        android:showAsAction="always" />-->
 </menu>
