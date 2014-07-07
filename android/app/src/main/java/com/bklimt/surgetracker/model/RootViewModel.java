@@ -149,22 +149,29 @@ public class RootViewModel extends Model {
         SurgeCollection surges = getSurges();
         AggregateCollection aggregates = getAggregates();
 
-        write(writer, "<html>\n<body>\n\n");
+        writer.write("<html>\n");
+        writer.write("<head>\n");
+        writer.write("  <style>\n");
+        writer.write("    th { text-align: center; background-color: #94DBFF }\n");
+        writer.write("    td { text-align: center }\n");
+        writer.write("  </style>\n");
+        writer.write("</head>\n");
+        writer.write("<body>\n");
 
         writer.write("<h2>Summary</h2>\n");
         writer.write("<table style=\"border: solid black 1px; border-collapse: collapse\">\n");
         writer.write("  <tr>\n");
-        writer.write("    <th># of Surges</th>\n");
+        writer.write("    <th># of<br>Surges</th>\n");
         writer.write("    <th>Since</th>\n");
-        writer.write("    <th>Average Duration (mm:ss)</th>\n");
-        writer.write("    <th>Average Time Between (mm:ss)</th>\n");
+        writer.write("    <th>Avg Duration<br>(mm:ss)</th>\n");
+        writer.write("    <th>Avg Time<br>Between (mm:ss)</th>\n");
         writer.write("  </tr>\n");
         aggregates.each(new Visitor<Aggregate>() {
             @Override
             public void visit(Aggregate aggregate) throws Exception {
                 writer.write("  <tr>\n");
                 writer.write("    <td>" + aggregate.getCount() + "</td>\n");
-                writer.write("    <td>" + aggregate.getSinceDay(context) + " " +
+                writer.write("    <td>" + aggregate.getSinceDay(context) + "<br>" +
                         aggregate.getSinceTime(context) + "</td>\n");
                 writer.write("    <td>" + aggregate.getAverageDurationString() + "</td>\n");
                 writer.write("    <td>" + aggregate.getAverageTimeBetweenString() + "</td>\n");
@@ -176,8 +183,8 @@ public class RootViewModel extends Model {
         writer.write("<h2>Details</h2>\n");
         writer.write("<table style=\"border: solid black 1px; border-collapse: collapse\">\n");
         writer.write("  <tr>\n");
-        writer.write("    <th>Duration (mm:ss)</th>\n");
-        writer.write("    <th>Time Between (mm:ss)</th>\n");
+        writer.write("    <th>Duration<br>(mm:ss)</th>\n");
+        writer.write("    <th>Time Between<br>(mm:ss)</th>\n");
         writer.write("    <th>Start time</th>\n");
         writer.write("  </tr>\n");
         surges.each(new Visitor<Surge>() {
@@ -186,7 +193,7 @@ public class RootViewModel extends Model {
                 writer.write("  <tr>\n");
                 writer.write("    <td>" + surge.getDurationString() + "</td>\n");
                 writer.write("    <td>" + surge.getTimeBetweenString() + "</td>\n");
-                writer.write("    <td>" + surge.getStartDay(context) + " ");
+                writer.write("    <td>" + surge.getStartDay(context) + "<br>");
                 writer.write(surge.getStartTime(context) + "</td>\n");
                 writer.write("  </tr>\n");
             }
@@ -199,6 +206,7 @@ public class RootViewModel extends Model {
     private File writeHtmlToFile(Context context) {
         String state = Environment.getExternalStorageState();
         if (!Environment.MEDIA_MOUNTED.equals(state)) {
+            logger.warning("No external media is mounted.");
             return null;
         }
 
@@ -217,10 +225,12 @@ public class RootViewModel extends Model {
             FileOutputStream stream = new FileOutputStream(file);
             PrintWriter writer = new PrintWriter(stream);
             writeHtml(context, writer);
+            writer.flush();
             writer.close();
             return file;
 
         } catch (IOException ioe) {
+            logger.log(Level.SEVERE, "Unable to create HTML file.", ioe);
             return null;
         }
     }
