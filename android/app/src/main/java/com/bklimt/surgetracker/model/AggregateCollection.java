@@ -64,7 +64,10 @@ public class AggregateCollection extends Collection<Aggregate> {
                 if (surgesSince.size() == 0) {
                     continue;
                 }
-                add(new Aggregate(surgesSince, since));
+
+                final Date sinceCopy = new Date();
+                sinceCopy.setTime(since.getTime());
+                add(new Aggregate(surgesSince, sinceCopy));
 
                 if (surgesSince.size() == surges.size()) {
                     break;
